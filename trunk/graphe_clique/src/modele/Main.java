@@ -6,7 +6,7 @@ public class Main
 	{
 		
 		Graphe graphe = new Graphe("fichier.txt");
-		Clique clique = new Clique(graphe);
+		CliqueAbstraite clique = new Clique(graphe);
 		clique.rechercheClique();
 	}
 }
