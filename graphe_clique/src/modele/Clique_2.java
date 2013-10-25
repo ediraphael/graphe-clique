@@ -11,7 +11,7 @@ public class Clique_2 extends CliqueAbstraite
 	public Clique_2(Graphe grapheRecherche)
 	{
 		this.grapheRecherche = grapheRecherche;
-		this.listeClique = new Vector<Vector<Noeud>>();
+		listeClique = new Vector<Vector<Noeud>>();
 	}
 
 	public Graphe getGrapheRecherche()
@@ -32,12 +32,20 @@ public class Clique_2 extends CliqueAbstraite
 		{
 			Vector<Noeud> clique = new Vector<Noeud>();
 			clique.add(noeud);
-			ThreadRecherche thread = new ThreadRecherche(this,clique,noeud.getListeAdjacence());
-			threads.add(thread);
-			thread.start();
-			//this.recursiveClique(clique, noeud.getListeAdjacence());
-			//break;
+			this.recursiveClique(clique, noeud.getListeAdjacence());
 		}
+		int tailleMax = 0;
+		Vector<Noeud> listeRet = new Vector<Noeud>();
+		for (Vector<Noeud> liste : listeClique)
+		{
+			if (liste.size() > tailleMax)
+			{
+				listeRet = liste;
+				tailleMax = liste.size();
+			}
+		}
+		System.out.println(listeRet);
+		System.out.println(listeRet.size());
 		System.out.println("fin");
 		return null;
 	}
@@ -52,7 +60,7 @@ public class Clique_2 extends CliqueAbstraite
 		liste.removeAll(clique);
 
 		Noeud noeudRetenu = null;
-		int nbNoeudAdjacent=0;
+		int nbNoeudAdjacent = 0;
 		// Pour chaque noeud de la liste
 		for (Noeud noeud : liste)
 		{
@@ -60,26 +68,46 @@ public class Clique_2 extends CliqueAbstraite
 			Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeud.getListeAdjacence());
 			// On ne garde que les noeud qui sont encore atteignable;
 			listeAdjNoeud.retainAll(liste);
-			if(noeudRetenu==null || nbNoeudAdjacent<listeAdjNoeud.size())
+			if (noeudRetenu == null || nbNoeudAdjacent < listeAdjNoeud.size())
 			{
-				noeudRetenu=noeud;
+				noeudRetenu = noeud;
+				nbNoeudAdjacent = listeAdjNoeud.size();
 			}
 		}
-		
-		// On récupère une copie de la liste d'adjacence
-		Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeudRetenu.getListeAdjacence());
-		// On ne garde que les noeud qui sont encore atteignable;
-		listeAdjNoeud.retainAll(liste);
-		// On reconstruit une clique
-		Vector<Noeud> cliqueEnvoi = new Vector<Noeud>(clique);
-		// On y ajoute le noeud courant
-		cliqueEnvoi.add(noeudRetenu);
-		
-		System.out.println(cliqueEnvoi);
-		System.out.println(listeClique.size());
-		listeClique.add(cliqueEnvoi);
-		recursiveClique(cliqueEnvoi, listeAdjNoeud);
 
+		// On récupère une copie de la liste d'adjacence
+		if (noeudRetenu != null)
+		{
+			Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeudRetenu.getListeAdjacence());
+			// On ne garde que les noeud qui sont encore atteignable;
+			listeAdjNoeud.retainAll(liste);
+			// On reconstruit une clique
+			Vector<Noeud> cliqueEnvoi = new Vector<Noeud>(clique);
+			// On y ajoute le noeud courant
+			cliqueEnvoi.add(noeudRetenu);
+
+			// On recherche si on a déja vue cette clique
+			boolean dejaFait = false;
+			// Pour chaque clique
+			Vector<Vector<Noeud>> lis = new Vector<Vector<Noeud>>(listeClique);
+			for (Vector<Noeud> cli : lis)
+			{
+				if (cli.size()>=cliqueEnvoi.size() &&  cliqueEnvoi.containsAll(cli))
+				{
+					dejaFait = true;
+				}
+			}
+			if (dejaFait)
+			{
+
+			} else
+			{
+				System.out.println(cliqueEnvoi);
+				System.out.println(listeClique.size());
+				listeClique.add(cliqueEnvoi);
+				recursiveClique(cliqueEnvoi, listeAdjNoeud);
+			}
+		}
 		return cliqueRetour;
 	}
 }
