@@ -2,13 +2,13 @@ package modele;
 
 import java.util.Vector;
 
-public class Clique extends CliqueAbstraite
+public class Clique_2 extends CliqueAbstraite
 {
 	private Graphe grapheRecherche;
 	private static Vector<Vector<Noeud>> listeClique;
 	static int cpt = 0;
 
-	public Clique(Graphe grapheRecherche)
+	public Clique_2(Graphe grapheRecherche)
 	{
 		this.grapheRecherche = grapheRecherche;
 		this.listeClique = new Vector<Vector<Noeud>>();
