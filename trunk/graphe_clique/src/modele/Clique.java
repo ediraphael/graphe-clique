@@ -54,7 +54,7 @@ public class Clique extends CliqueAbstraite
 		// Pour chaque noeud de la liste
 		for (Noeud noeud : liste)
 		{
-			// On récupère une copie de la liste d'adjacence
+			// On récupère une copie de sa liste d'adjacence
 			Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeud.getListeAdjacence());
 			// On ne garde que les noeud qui sont encore atteignable;
 			listeAdjNoeud.retainAll(liste);
