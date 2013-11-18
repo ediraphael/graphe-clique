@@ -30,6 +30,11 @@ public class Graphe
 		this.listeNoeud = new Vector<Noeud>();
 		this.loadFile(fichier);
 	}
+	
+	public void setNoeuds(Vector<Noeud> noeuds)
+	{
+		this.listeNoeud=noeuds;
+	}
 
 	public String getNom()
 	{
@@ -127,7 +132,7 @@ public class Graphe
 						// On ajout les adjacence
 						noeud1.addNoeudAdjacent(noeud2);
 						noeud2.addNoeudAdjacent(noeud1);
-					} else if (token.hasMoreTokens() && token.nextToken().equals("FILE:") && this.nom.equals(""))
+					} else if (token.hasMoreTokens() && token.nextToken().equals("FILE:"))
 					{
 						this.nom = token.nextToken();
 					}
