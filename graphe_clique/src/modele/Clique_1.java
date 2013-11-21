@@ -2,13 +2,13 @@ package modele;
 
 import java.util.Vector;
 
-public class Clique extends CliqueAbstraite
+public class Clique_1 extends CliqueAbstraite
 {
 	private Graphe grapheRecherche;
 	private static Vector<Vector<Noeud>> listeClique;
 	static int cpt = 0;
 
-	public Clique(Graphe grapheRecherche)
+	public Clique_1(Graphe grapheRecherche)
 	{
 		this.grapheRecherche = grapheRecherche;
 		this.listeClique = new Vector<Vector<Noeud>>();
@@ -26,7 +26,8 @@ public class Clique extends CliqueAbstraite
 
 	public Graphe rechercheClique()
 	{
-		System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
+		//System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
+		Affichage.afficher("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
 		Vector<ThreadRecherche> threads = new Vector<ThreadRecherche>();
 		for (Noeud noeud : this.grapheRecherche.getListeNoeud())
 		{
@@ -38,7 +39,8 @@ public class Clique extends CliqueAbstraite
 			//this.recursiveClique(clique, noeud.getListeAdjacence());
 			//break;
 		}
-		System.out.println("fin");
+		//System.out.println("fin");
+		Affichage.afficher("Fin de la recherche de clique");
 		return null;
 	}
 

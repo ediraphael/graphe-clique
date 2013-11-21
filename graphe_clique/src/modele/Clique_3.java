@@ -26,7 +26,7 @@ public class Clique_3 extends CliqueAbstraite
 
 	public Graphe rechercheClique()
 	{
-		System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
+		//System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
 		Affichage.afficher(("Début recherche sur le graphe : " + this.grapheRecherche.getNom()));
 		int tailleMax=0;
 		Noeud noeudRet=null;
@@ -52,12 +52,12 @@ public class Clique_3 extends CliqueAbstraite
 				tailleMax = liste.size();
 			}
 		}
-		System.out.println(listeRet);
+		//System.out.println(listeRet);
 		Affichage.afficher((listeRet));
-		System.out.println(listeRet.size());
+		//System.out.println(listeRet.size());
 		Affichage.afficher(listeRet.size());
-		System.out.println("fin");
-		Affichage.afficher(("fin"));
+		//System.out.println("fin");
+		Affichage.afficher(("Fin de la recherche de clique"));
 		return null;
 	}
 

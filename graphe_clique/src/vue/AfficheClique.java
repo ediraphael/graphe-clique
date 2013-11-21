@@ -1,6 +1,7 @@
 package vue;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.*;
 
@@ -10,6 +11,10 @@ class AfficheClique extends JPanel
 	public static final String AfficheClique = null;
 	static JEditorPane grandeZone;
 
+	private JRadioButton avant = new JRadioButton("Avant  ", true);
+	private JRadioButton arriere = new JRadioButton("Arriere", false);
+	private JRadioButton mixte = new JRadioButton("Mixte", false);
+	
 	public AfficheClique() throws IOException
 	{
 
