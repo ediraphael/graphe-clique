@@ -12,6 +12,7 @@ public class GrapheClique
 	public static Graphe graphe = new Graphe();
 	public static CliqueAbstraite clique;
 	public static DownloadFile dfile = new DownloadFile("Votre fichier correspondant au graphe","fichier.txt");
+	public static Choix_clique cliques = new Choix_clique();
 	
 	public static Graphe getGraphe()
 	{
@@ -35,8 +36,9 @@ public class GrapheClique
 	
 	public static void loadFichier()
 	{
-		graphe.setNoeuds(new Vector<Noeud>());
-		graphe.loadFile(dfile.getPathText());
+		//graphe.setNoeuds(new Vector<Noeud>());
+		graphe = new Graphe(dfile.getPathText());
+		//graphe.loadFile(dfile.getPathText());
 	}
 	
 	public static void lancerAffichage() throws IOException
@@ -49,9 +51,14 @@ public class GrapheClique
 		
 		Affichage.setECRAN(new Ecran_fenetre(aclique));
 		
+		JPanel top = new JPanel();
+		top.setLayout(new BorderLayout());
+		top.add(dfile,BorderLayout.NORTH);
+		top.add(cliques,BorderLayout.CENTER);
+		
 		JPanel panneau = new JPanel();
 		panneau.setLayout(new BorderLayout());
-		panneau.add(dfile, BorderLayout.NORTH);
+		panneau.add(top, BorderLayout.NORTH);
 		panneau.add(aclique, BorderLayout.CENTER);
 		panneau.add(rclique, BorderLayout.SOUTH);
 		

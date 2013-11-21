@@ -26,7 +26,7 @@ public class Clique_2 extends CliqueAbstraite
 
 	public Graphe rechercheClique()
 	{
-		System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
+		//System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
 		Affichage.afficher(("Début recherche sur le graphe : " + this.grapheRecherche.getNom()));
 		Vector<ThreadRecherche> threads = new Vector<ThreadRecherche>();
 		for (Noeud noeud : this.grapheRecherche.getListeNoeud())
@@ -45,12 +45,12 @@ public class Clique_2 extends CliqueAbstraite
 				tailleMax = liste.size();
 			}
 		}
-		System.out.println(listeRet);
+		//System.out.println(listeRet);
 		Affichage.afficher((listeRet));
-		System.out.println(listeRet.size());
+		//System.out.println(listeRet.size());
 		Affichage.afficher(listeRet.size());
-		System.out.println("fin");
-		Affichage.afficher("fin");
+		//System.out.println("fin");
+		Affichage.afficher("Fin de la recherche de clique");
 		return null;
 	}
 
@@ -106,9 +106,9 @@ public class Clique_2 extends CliqueAbstraite
 
 			} else
 			{
-				System.out.println(cliqueEnvoi);
+				//System.out.println(cliqueEnvoi);
 				Affichage.afficher(cliqueEnvoi);
-				System.out.println(listeClique.size());
+				//System.out.println(listeClique.size());
 				Affichage.afficher(listeClique.size());
 				listeClique.add(cliqueEnvoi);
 				recursiveClique(cliqueEnvoi, listeAdjNoeud);
