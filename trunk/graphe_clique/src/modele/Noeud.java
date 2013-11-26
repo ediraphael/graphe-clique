@@ -1,19 +1,19 @@
 package modele;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class Noeud
 {
 	private String nom;
-	private Vector<Noeud> listeAdjacence;
+	private ArrayList<String> listeAdjacence;
 
 	public Noeud(String nom)
 	{
 		this.nom = nom;
-		this.listeAdjacence = new Vector<Noeud>();
+		this.listeAdjacence = new ArrayList<String>();
 	}
 
-	public Noeud(String nom, Vector<Noeud> listeAdjacence)
+	public Noeud(String nom, ArrayList<String> listeAdjacence)
 	{
 		this.nom = nom;
 		this.listeAdjacence = listeAdjacence;
@@ -29,12 +29,12 @@ public class Noeud
 		this.nom = nom;
 	}
 
-	public Vector<Noeud> getListeAdjacence()
+	public ArrayList<String> getListeAdjacence()
 	{
 		return listeAdjacence;
 	}
 
-	public void setListeAdjacence(Vector<Noeud> listeAdjacence)
+	public void setListeAdjacence(ArrayList<String> listeAdjacence)
 	{
 		this.listeAdjacence = listeAdjacence;
 	}
@@ -44,16 +44,16 @@ public class Noeud
 		if (!this.listeAdjacence.contains(noeud))
 		{
 			boolean dejaPresent = false;
-			for (Noeud noeudListe : this.listeAdjacence)
+			for (String noeudListe : this.listeAdjacence)
 			{
-				if (noeudListe.estNoeud(noeud.getNom()))
+				if (noeudListe.equals(noeud.getNom()))
 				{
 					dejaPresent = true;
 				}
 			}
 			if (!dejaPresent)
 			{
-				this.listeAdjacence.add(noeud);
+				this.listeAdjacence.add(noeud.getNom());
 			}
 		}
 	}

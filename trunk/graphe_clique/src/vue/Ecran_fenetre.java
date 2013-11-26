@@ -26,10 +26,12 @@ public class Ecran_fenetre extends Affichage
 	protected void afficher_message(Object message)
 	{
 		this.affichage.rajouterTexte(message.toString());
+		this.affichage.repaint();
+		this.affichage.validate();
 	}
 	
 	protected void reset_message()
 	{
-		affichage.reset();
+		this.affichage.reset();
 	}
 }

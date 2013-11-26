@@ -1,14 +1,14 @@
 package modele;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class ThreadRecherche extends Thread
 {
 	CliqueAbstraite cli;
-	Vector<Noeud> clique;
-	Vector<Noeud> adj;
+	ArrayList<Integer> clique;
+	ArrayList<Integer> adj;
 	
-	public ThreadRecherche(CliqueAbstraite cli,Vector<Noeud> clique,Vector<Noeud> adj)
+	public ThreadRecherche(CliqueAbstraite cli,ArrayList<Integer> clique,ArrayList<Integer> adj)
 	{
 		this.cli=cli;
 		this.clique = clique;

@@ -1,50 +1,34 @@
 package modele;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class Clique_3 extends CliqueAbstraite
 {
-	private Graphe grapheRecherche;
-	private static Vector<Vector<Noeud>> listeClique;
-	static int cpt = 0;
-
 	public Clique_3(Graphe grapheRecherche)
 	{
-		this.grapheRecherche = grapheRecherche;
-		listeClique = new Vector<Vector<Noeud>>();
-	}
-
-	public Graphe getGrapheRecherche()
-	{
-		return grapheRecherche;
-	}
-
-	public void setGrapheRecherche(Graphe grapheRecherche)
-	{
-		this.grapheRecherche = grapheRecherche;
+		super(grapheRecherche, new ArrayList<ArrayList<Integer>>());
 	}
 
 	public Graphe rechercheClique()
 	{
-		//System.out.println("Début recherche sur le graphe : " + this.grapheRecherche.getNom());
-		Affichage.afficher(("Début recherche sur le graphe : " + this.grapheRecherche.getNom()));
-		int tailleMax=0;
-		Noeud noeudRet=null;
-		for (Noeud noeud : this.grapheRecherche.getListeNoeud())
+		Affichage.afficher(("Début recherche sur le graphe : " + this.getGrapheRecherche().getNom()));
+		int tailleMax = 0;
+		Integer noeudRet = null;
+		for (Integer noeud : this.getGrapheRecherche().getListeNoeud().keySet())
 		{
-			if(noeud.getListeAdjacence().size()>tailleMax)
+			if (this.getGrapheRecherche().getListeNoeud().get(noeud).size() > tailleMax)
 			{
-				tailleMax=noeud.getListeAdjacence().size();
-				noeudRet=noeud;
+				tailleMax = this.getGrapheRecherche().getListeNoeud().get(noeud).size();
+				noeudRet = noeud;
 			}
 		}
 		
-		Vector<Noeud> clique = new Vector<Noeud>();
+		ArrayList<Integer> clique = new ArrayList<Integer>();
 		clique.add(noeudRet);
-		this.recursiveClique(clique, noeudRet.getListeAdjacence());
+		this.recursiveClique(clique, this.getGrapheRecherche().getListeNoeud().get(noeudRet));
 		tailleMax = 0;
-		Vector<Noeud> listeRet = new Vector<Noeud>();
-		for (Vector<Noeud> liste : listeClique)
+		ArrayList<Integer> listeRet = new ArrayList<Integer>();
+		for (ArrayList<Integer> liste : this.getListeClique())
 		{
 			if (liste.size() > tailleMax)
 			{
@@ -52,75 +36,48 @@ public class Clique_3 extends CliqueAbstraite
 				tailleMax = liste.size();
 			}
 		}
-		//System.out.println(listeRet);
-		Affichage.afficher((listeRet));
-		//System.out.println(listeRet.size());
-		Affichage.afficher(listeRet.size());
-		//System.out.println("fin");
+		// System.out.println(listeRet);
+		// Affichage.afficher((listeRet));
+		// System.out.println(listeRet.size());
+		// Affichage.afficher(listeRet.size());
+		// System.out.println("fin");
 		Affichage.afficher(("Fin de la recherche de clique"));
 		return null;
 	}
 
-	public Vector<Noeud> recursiveClique(Vector<Noeud> clique, Vector<Noeud> listeNoeud)
+	public void recursiveClique(ArrayList<Integer> clique, ArrayList<Integer> liste)
 	{
-		// On clone la liste d'adjacence et la clique
-		Vector<Noeud> cliqueRetour = new Vector<Noeud>(clique);
-		Vector<Noeud> liste = new Vector<Noeud>(listeNoeud);
-		// On retire tous les noeud de la clique dans la liste pour ne pas
-		// revenir dessus
-		liste.removeAll(clique);
-
-		Noeud noeudRetenu = null;
-		int nbNoeudAdjacent = 0;
+		Integer noeudRetenu = null;
+		int nbNoeudAdjacent = -1;
 		// Pour chaque noeud de la liste
-		for (Noeud noeud : liste)
+		for (Integer noeud : liste)
 		{
-			// On récupère une copie de sa liste d'adjacence
-			Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeud.getListeAdjacence());
-			// On ne garde que les noeud qui sont encore atteignable;
-			listeAdjNoeud.retainAll(liste);
-			if (noeudRetenu == null || nbNoeudAdjacent < listeAdjNoeud.size())
+			this.getGrapheRecherche().getListeNoeud().get(noeud).retainAll(liste);
+			if (nbNoeudAdjacent < this.getGrapheRecherche().getListeNoeud().get(noeud).size())
 			{
 				noeudRetenu = noeud;
-				nbNoeudAdjacent = listeAdjNoeud.size();
+				nbNoeudAdjacent = this.getGrapheRecherche().getListeNoeud().get(noeud).size();
 			}
 		}
-
-		// On récupère une copie de la liste d'adjacence
 		if (noeudRetenu != null)
 		{
-			Vector<Noeud> listeAdjNoeud = new Vector<Noeud>(noeudRetenu.getListeAdjacence());
-			// On ne garde que les noeud qui sont encore atteignable;
-			listeAdjNoeud.retainAll(liste);
-			// On reconstruit une clique
-			Vector<Noeud> cliqueEnvoi = new Vector<Noeud>(clique);
-			// On y ajoute le noeud courant
-			cliqueEnvoi.add(noeudRetenu);
-
-			// On recherche si on a déja vue cette clique
-			boolean dejaFait = false;
-			// Pour chaque clique
-			Vector<Vector<Noeud>> lis = new Vector<Vector<Noeud>>(listeClique);
-			for (Vector<Noeud> cli : lis)
-			{
-				if (cli.size()>=cliqueEnvoi.size() &&  cliqueEnvoi.containsAll(cli))
-				{
-					dejaFait = true;
-				}
-			}
-			if (dejaFait)
-			{
-
-			} else
-			{
-				System.out.println(cliqueEnvoi);
-				Affichage.afficher((cliqueEnvoi));
-				System.out.println(listeClique.size());
-				Affichage.afficher((listeClique.size()));
-				listeClique.add(cliqueEnvoi);
-				recursiveClique(cliqueEnvoi, listeAdjNoeud);
-			}
+			clique.add(noeudRetenu);
+			System.out.println(clique);
+			this.cpt++;
+			// Affichage.afficher((clique));
+			// System.out.println(this.getGrapheRecherche().getListeNoeud().get(noeudRetenu));
+			// Affichage.afficher((this.getListeClique().size()));
+			recursiveClique(clique, this.getGrapheRecherche().getListeNoeud().get(noeudRetenu));
+		} else
+		{
+			this.getListeClique().add(clique);
 		}
-		return cliqueRetour;
+	}
+
+	@Override
+	public void recursiveClique(int[][] graphe, ArrayList<Integer> clique, int dernierNoeud)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
