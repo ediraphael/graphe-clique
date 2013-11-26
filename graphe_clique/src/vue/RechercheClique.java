@@ -16,7 +16,7 @@ public class RechercheClique extends JPanel implements ActionListener
 
 	public RechercheClique()
 	{
-		typeRechercheClique="";
+		typeRechercheClique = "";
 		add(clear, BorderLayout.WEST);
 		add(rechercheClique, BorderLayout.CENTER);
 		clear.addActionListener(this);
@@ -30,34 +30,63 @@ public class RechercheClique extends JPanel implements ActionListener
 			AfficheClique.reset();
 			long start = System.currentTimeMillis();
 			GrapheClique.loadFichier();
-			// GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
-			// GrapheClique.setClique(new Clique_2(GrapheClique.getGraphe()));
 			long start2 = System.currentTimeMillis();
+			Affichage.afficher(("durée chargement fichier : " + ((float) (start2 - start)) / 1000 + "s"));
 			switch (typeRechercheClique)
 			{
 			case "optimal":
 				GrapheClique.setClique(new Clique_1(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() );
 				break;
 			case "semiGlouton":
-				GrapheClique.setClique(new Clique_2(GrapheClique.getGraphe()));
+				GrapheClique.setClique(new Clique_2_2(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  + 1);
+				break;
+			case "gloutonAmeliorePlus":
+				GrapheClique.setClique(new Clique_4(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() + 1);
+				break;
+			case "gloutonAmeliore":
+				GrapheClique.setClique(new Clique_5(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(1001);
 				break;
 			case "glouton":
-				GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+				GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  / 10);
 				break;
 
 			default:
-				GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+				GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  / 10);
 				break;
 			}
+			// GrapheClique.progressBar.setClique(GrapheClique.getClique());
+			Thread th = new Thread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Thread th = new Thread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							while (GrapheClique.getClique().isRunning())
+							{
+								GrapheClique.progressBar.setValue(GrapheClique.getClique().getCpt());
+							}
+							GrapheClique.progressBar.setValue(GrapheClique.progressBar.getMaximum());
+						}
+					});
+					th.start();
+					GrapheClique.getClique().lancerRecherche();
+				}
+			});
+			th.start();
 
-			GrapheClique.getClique().rechercheClique();
-			long dure = System.currentTimeMillis() - start;
-			Affichage.afficher(("durée chargement fichier : " + ((float) (start2 - start)) / 1000 + "s"));
-			Affichage.afficher(("durée calcul : " + ((float) (dure)) / 1000 + "s"));
-			Affichage.afficher(("durée = " + ((float) dure + (start2 - start)) / 1000 + "s"));
 		} else if (e.getSource() == clear)
 		{
-			AfficheClique.reset();
+			Affichage.reset();
 		}
 	}
 }

@@ -3,37 +3,40 @@ package modele;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 public class Graphe
 {
 	private String nom;
-	private Vector<Noeud> listeNoeud;
+	// private HashMap<String, Noeud> listeNoeud;
+	private HashMap<Integer, ArrayList<Integer>> listeNoeud;
+	private int[][] graphe;
 
 	public Graphe()
 	{
 		this.nom = "";
-		this.listeNoeud = new Vector<Noeud>();
+		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
 	public Graphe(String fichier)
 	{
 		this.nom = "";
-		this.listeNoeud = new Vector<Noeud>();
+		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
 		this.loadFile(fichier);
 	}
 
 	public Graphe(String nomGraphe, String fichier)
 	{
 		this.nom = nomGraphe;
-		this.listeNoeud = new Vector<Noeud>();
+		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
 		this.loadFile(fichier);
 	}
-	
-	public void setNoeuds(Vector<Noeud> noeuds)
+
+	public void setNoeuds(HashMap<Integer, ArrayList<Integer>> noeuds)
 	{
-		this.listeNoeud=noeuds;
+		this.listeNoeud = noeuds;
 	}
 
 	public String getNom()
@@ -46,59 +49,109 @@ public class Graphe
 		this.nom = nom;
 	}
 
-	public Vector<Noeud> getListeNoeud()
+	public HashMap<Integer, ArrayList<Integer>> getListeNoeud()
 	{
 		return listeNoeud;
 	}
 
-	public void setListeNoeud(Vector<Noeud> listeNoeud)
+	public void setListeNoeud(HashMap<Integer, ArrayList<Integer>> listeNoeud)
 	{
 		this.listeNoeud = listeNoeud;
 	}
 
 	public boolean contain(Noeud noeud)
 	{
-		return this.listeNoeud.contains(noeud);
+		return this.listeNoeud.containsKey(noeud.getNom());
 	}
 
-	public boolean contain(String noeud)
+	public boolean contain(Integer noeud)
 	{
-		for (Noeud noeudListe : this.listeNoeud)
+		return this.listeNoeud.containsKey(noeud);
+	}
+
+	public boolean addNoeud(Integer nom, ArrayList<Integer> listadj)
+	{
+		return this.listeNoeud.put(nom, listadj) != null;
+	}
+
+	public boolean addNoeud(Integer noeud)
+	{
+		return this.addNoeud(noeud, new ArrayList<Integer>());
+	}
+
+	public int[][] getGraphe()
+	{
+		return graphe;
+	}
+
+	public int getNbNoeud()
+	{
+		return graphe.length;
+	}
+
+	public int getNbNoeudAdjacent(int[][] graphe, int noeud)
+	{
+		int cpt = 0;
+		for (int i = 0; i < graphe.length; i++)
 		{
-			if (noeudListe.estNoeud(noeud))
+			if (graphe[noeud][i] == 1)
 			{
-				return true;
+				cpt++;
 			}
 		}
-		return false;
+		return cpt;
 	}
 
-	public boolean addNoeud(Noeud noeud)
+	public void setGraphe(int[][] graphe)
 	{
-		return this.listeNoeud.add(noeud);
-	}
-
-	public boolean addNoeud(String noeud)
-	{
-		return this.addNoeud(new Noeud(noeud));
-	}
-
-	public Noeud getNoeud(String noeud)
-	{
-		for (Noeud noeudListe : this.listeNoeud)
-		{
-			if (noeudListe.estNoeud(noeud))
-			{
-				return noeudListe;
-			}
-		}
-		return null;
+		this.graphe = graphe;
 	}
 
 	public void loadFile(String fichier)
 	{
 		try
 		{
+			BufferedReader inputF = new BufferedReader(new FileReader(fichier));
+			int nbNoeud = 0;
+			try
+			{
+				String line = null;
+				// On parcours toutes les lignes
+				while ((line = inputF.readLine()) != null)
+				{
+					if (line.contains("c number of vertices"))
+					{
+						String[] lineSplit = line.split(":");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					}else if (line.contains("Graph Size"))
+					{
+						String[] lin = line.split(",");
+						String[] lineSplit = lin[0].split(":");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					}
+					else if (line.contains("n ="))
+					{
+						String[] lin = line.split("a");
+						String[] lineSplit = lin[0].split("=");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					}
+				}
+			} finally
+			{
+				inputF.close();
+			}
+			System.out.println(nbNoeud);
+			this.graphe = new int[nbNoeud][nbNoeud];
+			for (int i = 0; i < graphe.length; i++)
+			{
+				for (int j = 0; j < graphe.length; j++)
+				{
+					graphe[i][j] = 0;
+				}
+			}
 			// On ouvre un pointer sur fichier
 			BufferedReader input = new BufferedReader(new FileReader(fichier));
 			try
@@ -114,24 +167,23 @@ public class Graphe
 					if (firstToken.equals("e"))
 					{
 						// Alors on récupère les noeud
-						String stringNoeud1 = token.nextToken();
-						String stringNoeud2 = token.nextToken();
+						Integer stringNoeud1 = Integer.parseInt(token.nextToken());
+						Integer stringNoeud2 = Integer.parseInt(token.nextToken());
 						// On les ajoutes au graph si il ne sont pas déjà
 						// présents
-						if (!this.contain(stringNoeud1))
-						{
-							this.addNoeud(stringNoeud1);
-						}
-						if (!this.contain(stringNoeud2))
-						{
-							this.addNoeud(stringNoeud2);
-						}
-						// On récupère les vrai noeud du graphe
-						Noeud noeud1 = this.getNoeud(stringNoeud1);
-						Noeud noeud2 = this.getNoeud(stringNoeud2);
+
+						/*
+						 * if (!this.contain(stringNoeud1)) {
+						 * this.addNoeud(stringNoeud1); } if
+						 * (!this.contain(stringNoeud2)) {
+						 * this.addNoeud(stringNoeud2); }
+						 */
+
 						// On ajout les adjacence
-						noeud1.addNoeudAdjacent(noeud2);
-						noeud2.addNoeudAdjacent(noeud1);
+						// this.listeNoeud.get(stringNoeud1).add(stringNoeud2);
+						// this.listeNoeud.get(stringNoeud2).add(stringNoeud1);
+						this.graphe[stringNoeud1 - 1][stringNoeud2 - 1] = 1;
+						this.graphe[stringNoeud2 - 1][stringNoeud1 - 1] = 1;
 					} else if (token.hasMoreTokens() && token.nextToken().equals("FILE:"))
 					{
 						this.nom = token.nextToken();

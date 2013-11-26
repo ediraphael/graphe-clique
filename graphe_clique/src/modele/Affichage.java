@@ -3,7 +3,6 @@ package modele;
 public abstract class Affichage
 {
 	private static Affichage ECRAN = new Ecran_console();
-	//private static Affichage ECRAN = new Ecran_fenetre();
 
 	protected abstract void afficher_message(Object message);
 
@@ -28,4 +27,6 @@ public abstract class Affichage
 	{
 		ECRAN = eCRAN;
 	}
+	
+	
 }

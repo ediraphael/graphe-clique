@@ -14,40 +14,57 @@ public class Choix_clique extends JPanel implements ActionListener
 {
 	private JRadioButton optimal = new JRadioButton("Optimal", false);
 	private JRadioButton semiGlouton = new JRadioButton("Semi-glouton", false);
+	private JRadioButton gloutonAmeliorePlus = new JRadioButton("Glouton Amélioré +", false);
+	private JRadioButton gloutonAmeliore = new JRadioButton("Glouton Amélioré", false);
 	private JRadioButton glouton = new JRadioButton("Glouton", true);
 
 	public Choix_clique()
 	{
 		optimal.addActionListener(this);
 		semiGlouton.addActionListener(this);
+		gloutonAmeliorePlus.addActionListener(this);
+		gloutonAmeliore.addActionListener(this);
 		glouton.addActionListener(this);
-		
+
 		ButtonGroup groupe = new ButtonGroup();
 		groupe.add(optimal);
 		groupe.add(semiGlouton);
+		groupe.add(gloutonAmeliorePlus);
+		groupe.add(gloutonAmeliore);
 		groupe.add(glouton);
-		
+
 		this.setLayout(new GridLayout());
 		this.add(optimal);
 		this.add(semiGlouton);
+		//this.add(gloutonAmeliorePlus);
+		//this.add(gloutonAmeliore);
 		this.add(glouton);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == optimal)
 		{
 			System.out.println("1");
-			RechercheClique.typeRechercheClique="optimal";
-		}else if (e.getSource() == semiGlouton)
+			RechercheClique.typeRechercheClique = "optimal";
+		} else if (e.getSource() == semiGlouton)
 		{
 			System.out.println("2");
-			RechercheClique.typeRechercheClique="semiGlouton";
-		}else if (e.getSource() == glouton)
+			RechercheClique.typeRechercheClique = "semiGlouton";
+		} else if (e.getSource() == glouton)
 		{
 			System.out.println("3");
-			RechercheClique.typeRechercheClique="glouton";
+			RechercheClique.typeRechercheClique = "glouton";
+		} else if (e.getSource() == gloutonAmeliore)
+		{
+			System.out.println("4");
+			RechercheClique.typeRechercheClique = "gloutonAmeliore";
+		}
+		else if (e.getSource() == gloutonAmeliorePlus)
+		{
+			System.out.println("5");
+			RechercheClique.typeRechercheClique = "gloutonAmeliorePlus";
 		}
 
 	}

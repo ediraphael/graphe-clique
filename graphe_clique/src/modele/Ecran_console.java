@@ -10,8 +10,6 @@ public class Ecran_console extends Affichage
 	@Override
 	protected void reset_message()
 	{
-		// TODO Auto-generated method stub
-		
+
 	}
 }
-
