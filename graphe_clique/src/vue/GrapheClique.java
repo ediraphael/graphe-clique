@@ -14,6 +14,7 @@ public class GrapheClique
 	public static CliqueAbstraite clique;
 	public static DownloadFile dfile = new DownloadFile("Votre fichier correspondant au graphe", "C250.9.clq");
 	public static Choix_clique cliques = new Choix_clique();
+	public static Choix_representation representations = new Choix_representation();
 	// public static ProgressBar progressBar = new ProgressBar(clique, 100);
 	public static JProgressBar progressBar = new JProgressBar(0,5000);
 
@@ -37,10 +38,10 @@ public class GrapheClique
 		GrapheClique.clique = clique;
 	}
 
-	public static void loadFichier()
+	public static void loadFichier(boolean matrice)
 	{
 		// graphe.setNoeuds(new Vector<Noeud>());
-		graphe = new Graphe(dfile.getPathText());
+		graphe = new Graphe(dfile.getPathText(),matrice);
 		// graphe.loadFile(dfile.getPathText());
 	}
 
@@ -56,7 +57,11 @@ public class GrapheClique
 		JPanel top = new JPanel();
 		top.setLayout(new BorderLayout());
 		top.add(dfile, BorderLayout.NORTH);
-		top.add(cliques, BorderLayout.CENTER);
+		JPanel choixCliqueEtRepresentation = new JPanel();
+		choixCliqueEtRepresentation.setLayout(new GridLayout(2, 1));
+		choixCliqueEtRepresentation.add(representations);
+		choixCliqueEtRepresentation.add(cliques);
+		top.add(choixCliqueEtRepresentation, BorderLayout.CENTER);
 		top.add(progressBar, BorderLayout.SOUTH);
 
 		JPanel panneau = new JPanel();

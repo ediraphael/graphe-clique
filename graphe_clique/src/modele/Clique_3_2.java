@@ -59,8 +59,8 @@ public class Clique_3_2 extends CliqueAbstraite
 		if (noeudRetenu != -1 && nbNoeudAdjacent >= 0)
 		{
 			clique.add(noeudRetenu+1);
-			System.out.println(clique);
-			System.out.println(clique.size());
+			//System.out.println(clique);
+			//System.out.println(clique.size());
 			this.cpt++;
 			recursiveClique(graphe,clique, noeudRetenu);
 		} else

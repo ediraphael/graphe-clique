@@ -43,12 +43,23 @@ public class Clique_2_2 extends CliqueAbstraite
 					grapheClone[j][j2] = this.getGrapheRecherche().getGraphe()[j][j2];
 				}
 			}
-			//this.recursiveClique(grapheClone, clique, i);
+			// this.recursiveClique(grapheClone, clique, i);
 			ThreadRechercheMatrice thread = new ThreadRechercheMatrice(this, grapheClone, clique, i);
 			threads.add(thread);
 			thread.start();
 			this.cpt++;
-			System.out.println(cpt);
+		}
+		boolean enAttente = true;
+		while (enAttente)
+		{
+			enAttente = false;
+			for (ThreadRechercheMatrice threadRechercheMatrice : threads)
+			{
+				if (threadRechercheMatrice.isAlive())
+				{
+					enAttente = true;
+				}
+			}
 		}
 		Affichage.afficher(("Fin de la recherche de clique"));
 
@@ -83,8 +94,8 @@ public class Clique_2_2 extends CliqueAbstraite
 		if (noeudRetenu != -1 && nbNoeudAdjacent >= 0)
 		{
 			clique.add(noeudRetenu + 1);
-			//System.out.println(clique);
-			//System.out.println(clique.size());
+			// System.out.println(clique);
+			// System.out.println(clique.size());
 			recursiveClique(graphe, clique, noeudRetenu);
 		} else
 		{

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Clique_6_2 extends CliqueAbstraite
 {
 	public int maxSizeClique = Integer.MIN_VALUE;
+	private int cptDivergence = 0;
 
 	public Clique_6_2(Graphe grapheRecherche)
 	{
@@ -66,7 +67,6 @@ public class Clique_6_2 extends CliqueAbstraite
 				if (nbNoeudTemp > nbNoeudAdjacent && nbNoeudTemp >= 0)
 				{
 					nbNoeudAdjacent = nbNoeudTemp;
-					// noeudRetenu = i;
 					noeudsRetenu = new ArrayList<Integer>();
 					noeudsRetenu.add(i);
 				} else
@@ -75,16 +75,34 @@ public class Clique_6_2 extends CliqueAbstraite
 				}
 			}
 		}
-		if ((clique.size() + nbNoeudAdjacent) > maxSizeClique)
+		if ((clique.size() + nbNoeudAdjacent) >= maxSizeClique && noeudsRetenu.size() > 0)
 		{
+			// System.out.println("div:" + cptDivergence);
+
+			if (cptDivergence < 20 && noeudsRetenu.size() > 1)
+			{
+				if ((cptDivergence + noeudsRetenu.size()) > 20)
+				{
+					ArrayList<Integer> newNoeudsRetenu = new ArrayList<Integer>();
+					newNoeudsRetenu.addAll(noeudsRetenu.subList(0, 20 - cptDivergence));
+					noeudsRetenu = newNoeudsRetenu;
+				}
+				cptDivergence += noeudsRetenu.size();
+			} else
+			{
+				Integer noeudRetenu = noeudsRetenu.get(0);
+				noeudsRetenu = new ArrayList<Integer>();
+				noeudsRetenu.add(noeudRetenu);
+			}
+
 			for (Integer noeudRetenu : noeudsRetenu)
 			{
 				if (noeudRetenu != -1 && nbNoeudAdjacent >= 0)
 				{
 					ArrayList<Integer> cliqueEnvoie = new ArrayList<Integer>(clique);
 					cliqueEnvoie.add(noeudRetenu + 1);
-					System.out.println(cliqueEnvoie);
-					System.out.println(cliqueEnvoie.size());
+					// System.out.println(cliqueEnvoie);
+					// System.out.println(cliqueEnvoie.size());
 					boolean dejaFait = false;
 					for (ArrayList<Integer> cliqueL : this.getListeClique())
 					{
@@ -96,23 +114,21 @@ public class Clique_6_2 extends CliqueAbstraite
 					if (!dejaFait)
 					{
 						this.getListeClique().add(cliqueEnvoie);
-
-						int[][] grapheClone = new int[graphe.length][graphe.length];
-						for (int j = 0; j < grapheClone.length; j++)
-						{
-							for (int j2 = 0; j2 < grapheClone.length; j2++)
-							{
-								grapheClone[j][j2] = graphe[j][j2];
-							}
-						}
+						int[][] grapheClone = this.getGrapheRecherche().getGraphe().clone();
 						this.cpt++;
+
 						recursiveClique(grapheClone, cliqueEnvoie, noeudRetenu);
 					}
 				} else
 				{
-					this.getListeClique().add(clique);
+					ArrayList<Integer> cliqueEnvoie = new ArrayList<Integer>(clique);
+					cliqueEnvoie.add(noeudRetenu + 1);
+					this.getListeClique().add(cliqueEnvoie);
 				}
 			}
+		}else
+		{
+			this.getListeClique().add(clique);
 		}
 	}
 
