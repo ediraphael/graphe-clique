@@ -71,8 +71,8 @@ public class GrapheClique
 		panneau.add(rclique, BorderLayout.SOUTH);
 
 		cadre.setContentPane(panneau);
-		cadre.setLocation(400, 300);
 		cadre.pack();
+		cadre.setLocationRelativeTo(null);
 		cadre.setVisible(true);
 		cadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
