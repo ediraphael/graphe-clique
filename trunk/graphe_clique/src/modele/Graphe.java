@@ -20,18 +20,18 @@ public class Graphe
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
-	public Graphe(String fichier)
+	public Graphe(String fichier,boolean matrice)
 	{
 		this.nom = "";
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
-		this.loadFile(fichier);
+		this.loadFile(fichier,matrice);
 	}
 
-	public Graphe(String nomGraphe, String fichier)
+	public Graphe(String nomGraphe, String fichier,boolean matrice)
 	{
 		this.nom = nomGraphe;
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
-		this.loadFile(fichier);
+		this.loadFile(fichier,matrice);
 	}
 
 	public void setNoeuds(HashMap<Integer, ArrayList<Integer>> noeuds)
@@ -86,6 +86,10 @@ public class Graphe
 
 	public int getNbNoeud()
 	{
+		if(listeNoeud.size()!=0)
+		{
+			return listeNoeud.size();
+		}
 		return graphe.length;
 	}
 
@@ -107,7 +111,18 @@ public class Graphe
 		this.graphe = graphe;
 	}
 
-	public void loadFile(String fichier)
+	public void loadFile(String fichier,boolean matrice)
+	{
+		if(matrice)
+		{
+			loadFileMatrice(fichier);
+		}else
+		{
+			loadFileArrayList(fichier);
+		}
+	}
+	
+	private void loadFileArrayList(String fichier)
 	{
 		try
 		{
@@ -124,14 +139,13 @@ public class Graphe
 						String[] lineSplit = line.split(":");
 						nbNoeud = Integer.parseInt(lineSplit[1].trim());
 						break;
-					}else if (line.contains("Graph Size"))
+					} else if (line.contains("Graph Size"))
 					{
 						String[] lin = line.split(",");
 						String[] lineSplit = lin[0].split(":");
 						nbNoeud = Integer.parseInt(lineSplit[1].trim());
 						break;
-					}
-					else if (line.contains("n ="))
+					} else if (line.contains("n ="))
 					{
 						String[] lin = line.split("a");
 						String[] lineSplit = lin[0].split("=");
@@ -143,7 +157,91 @@ public class Graphe
 			{
 				inputF.close();
 			}
-			System.out.println(nbNoeud);
+
+			// On ouvre un pointer sur fichier
+			BufferedReader input = new BufferedReader(new FileReader(fichier));
+			try
+			{
+				String line = null;
+				// On parcours toutes les lignes
+				while ((line = input.readLine()) != null)
+				{
+					// On split la ligne
+					StringTokenizer token = new StringTokenizer(line, " ");
+					// Si le premier mot est un e
+					String firstToken = token.nextToken();
+					if (firstToken.equals("e"))
+					{
+						// Alors on récupère les noeud
+						Integer stringNoeud1 = Integer.parseInt(token.nextToken());
+						Integer stringNoeud2 = Integer.parseInt(token.nextToken());
+						// On les ajoutes au graph si il ne sont pas déjà
+						// présents
+
+						if (!this.contain(stringNoeud1))
+						{
+							this.addNoeud(stringNoeud1);
+						}
+						if (!this.contain(stringNoeud2))
+						{
+							this.addNoeud(stringNoeud2);
+						}
+
+						// On ajout les adjacence
+						this.listeNoeud.get(stringNoeud1).add(stringNoeud2);
+						this.listeNoeud.get(stringNoeud2).add(stringNoeud1);
+					} else if (token.hasMoreTokens() && token.nextToken().equals("FILE:"))
+					{
+						this.nom = token.nextToken();
+					}
+				}
+			} finally
+			{
+				input.close();
+			}
+		} catch (IOException ex)
+		{
+			System.err.println("Erreur Graphe:loadFile(" + fichier + "):" + ex.getMessage());
+			Affichage.afficher("Erreur Graphe:loadFile(" + fichier + "):" + ex.getMessage());
+		}
+	}
+	
+	private void loadFileMatrice(String fichier)
+	{
+		try
+		{
+			BufferedReader inputF = new BufferedReader(new FileReader(fichier));
+			int nbNoeud = 0;
+			try
+			{
+				String line = null;
+				// On parcours toutes les lignes
+				while ((line = inputF.readLine()) != null)
+				{
+					if (line.contains("c number of vertices"))
+					{
+						String[] lineSplit = line.split(":");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					} else if (line.contains("Graph Size"))
+					{
+						String[] lin = line.split(",");
+						String[] lineSplit = lin[0].split(":");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					} else if (line.contains("n ="))
+					{
+						String[] lin = line.split("a");
+						String[] lineSplit = lin[0].split("=");
+						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					}
+				}
+			} finally
+			{
+				inputF.close();
+			}
+			// System.out.println(nbNoeud);
 			this.graphe = new int[nbNoeud][nbNoeud];
 			for (int i = 0; i < graphe.length; i++)
 			{
@@ -169,19 +267,7 @@ public class Graphe
 						// Alors on récupère les noeud
 						Integer stringNoeud1 = Integer.parseInt(token.nextToken());
 						Integer stringNoeud2 = Integer.parseInt(token.nextToken());
-						// On les ajoutes au graph si il ne sont pas déjà
-						// présents
 
-						/*
-						 * if (!this.contain(stringNoeud1)) {
-						 * this.addNoeud(stringNoeud1); } if
-						 * (!this.contain(stringNoeud2)) {
-						 * this.addNoeud(stringNoeud2); }
-						 */
-
-						// On ajout les adjacence
-						// this.listeNoeud.get(stringNoeud1).add(stringNoeud2);
-						// this.listeNoeud.get(stringNoeud2).add(stringNoeud1);
 						this.graphe[stringNoeud1 - 1][stringNoeud2 - 1] = 1;
 						this.graphe[stringNoeud2 - 1][stringNoeud1 - 1] = 1;
 					} else if (token.hasMoreTokens() && token.nextToken().equals("FILE:"))

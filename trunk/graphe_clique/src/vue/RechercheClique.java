@@ -13,10 +13,12 @@ public class RechercheClique extends JPanel implements ActionListener
 	private JButton rechercheClique = new JButton("START");
 	private JButton clear = new JButton("CLEAR");
 	public static String typeRechercheClique;
+	public static String typeRepresentationGraphe;
 
 	public RechercheClique()
 	{
 		typeRechercheClique = "";
+		typeRepresentationGraphe = "";
 		add(clear, BorderLayout.WEST);
 		add(rechercheClique, BorderLayout.CENTER);
 		clear.addActionListener(this);
@@ -29,35 +31,58 @@ public class RechercheClique extends JPanel implements ActionListener
 		{
 			AfficheClique.reset();
 			long start = System.currentTimeMillis();
-			GrapheClique.loadFichier();
+			if("arraylist".equals(typeRepresentationGraphe))
+			{
+				GrapheClique.loadFichier(false);
+			}else
+			{
+				GrapheClique.loadFichier(true);
+			}
+
 			long start2 = System.currentTimeMillis();
 			Affichage.afficher(("durée chargement fichier : " + ((float) (start2 - start)) / 1000 + "s"));
 			switch (typeRechercheClique)
 			{
-			case "optimal":
-				GrapheClique.setClique(new Clique_1(GrapheClique.getGraphe()));
-				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() );
-				break;
 			case "semiGlouton":
-				GrapheClique.setClique(new Clique_2_2(GrapheClique.getGraphe()));
-				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  + 1);
-				break;
-			case "gloutonAmeliorePlus":
-				GrapheClique.setClique(new Clique_4(GrapheClique.getGraphe()));
+				if("arraylist".equals(typeRepresentationGraphe))
+				{
+					GrapheClique.setClique(new Clique_2(GrapheClique.getGraphe()));
+				}else
+				{
+					GrapheClique.setClique(new Clique_2_2(GrapheClique.getGraphe()));
+				}
 				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() + 1);
 				break;
 			case "gloutonAmeliore":
-				GrapheClique.setClique(new Clique_5(GrapheClique.getGraphe()));
+				if("arraylist".equals(typeRepresentationGraphe))
+				{
+					GrapheClique.setClique(new Clique_6(GrapheClique.getGraphe()));
+				}else
+				{
+					GrapheClique.setClique(new Clique_6_2(GrapheClique.getGraphe()));
+				}
 				GrapheClique.progressBar.setMaximum(1001);
 				break;
 			case "glouton":
-				GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
-				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  / 10);
+				if("arraylist".equals(typeRepresentationGraphe))
+				{
+					GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+				}else
+				{
+					GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+				}
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() / 10);
 				break;
 
 			default:
-				GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
-				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud()  / 10);
+				if("arraylist".equals(typeRepresentationGraphe))
+				{
+					GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+				}else
+				{
+					GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+				}
+				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() / 10);
 				break;
 			}
 			// GrapheClique.progressBar.setClique(GrapheClique.getClique());

@@ -4,46 +4,62 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		long start = System.currentTimeMillis();
+		// String nomGraphe = "C2000.9.clq";
+		String graphes[] = { "C2000.9.clq", "C1000.9.clq", "C500.9.clq", "C125.9.clq" };
 
-		// Graphe graphe = new Graphe("C2000.9.clq");
-		// Graphe graphe = new Graphe("fichier.txt");
+		/*for (String nomGraphe : graphes)
+		{
+			long start = System.currentTimeMillis();
+			Graphe graphe = new Graphe(nomGraphe);
+			long start2 = System.currentTimeMillis();
+			System.out.println("durée chargement fichier noeuds: " + ((float) (start2 - start)) / 1000 + "s");
 
-		// Graphe graphe = new Graphe("hier.txt");
-		// Graphe graphe = new Graphe("fichier.txt");
+			graphe = new Graphe(nomGraphe);
+			start2 = System.currentTimeMillis();
+			System.out.print("Semi-glouton : ");
+			CliqueAbstraite clique = new Clique_2_2(graphe);
+			clique.rechercheClique();
+			long start3 = System.currentTimeMillis();
+			System.out.print(" taille : " + clique.getMaximumSizeClique());
+			//System.out.print(clique.getMaximumClique());
+			System.out.println(" durée calcul : " + ((float) (start3 - start2)) / 1000 + "s");
 
-		// Graphe graphe = new Graphe("C125.9.clq");
-		// Graphe graphe = new Graphe("C250.9.clq");
-		// Graphe graphe = new Graphe("C500.9.clq");
-		// Graphe graphe = new Graphe("C1000.9.clq");
-		Graphe graphe = new Graphe("C2000.9.clq");
-		// Graphe graphe = new Graphe("C4000.5.clq");
-		// Graphe graphe = new Graphe("p_hat1500-3.clq");
+			graphe = new Graphe(nomGraphe);
+			start2 = System.currentTimeMillis();
+			System.out.print("Glouton amélioré : ");
+			clique = new Clique_6_2(graphe);
+			clique.rechercheClique();
+			start3 = System.currentTimeMillis();
+			System.out.print(" taille : " + clique.getMaximumSizeClique());
+			//System.out.println(clique.getMaximumClique());
+			System.out.println(" durée calcul : " + ((float) (start3 - start2)) / 1000 + "s");
+
+			graphe = new Graphe(nomGraphe);
+			start2 = System.currentTimeMillis();
+			System.out.print("Glouton");
+			clique = new Clique_3_2(graphe);
+			clique.rechercheClique();
+			start3 = System.currentTimeMillis();
+			System.out.print(" taille : " + clique.getMaximumSizeClique());
+			//System.out.print(clique.getMaximumClique());
+			System.out.println(" durée calcul : " + ((float) (start3 - start2)) / 1000 + "s");
+		}*/
+		
+		Graphe graphe = new Graphe("C2000.9.clq",true);
 		long start2 = System.currentTimeMillis();
-		Affichage.afficher("durée chargement fichier : " + ((float) (start2 - start)) / 1000 + "s");
-
-		Affichage.afficher("Clique 2");
+		System.out.print("Glouton");
 		CliqueAbstraite clique = new Clique_2_2(graphe);
-		// start2=start2;
 		clique.rechercheClique();
 		long start3 = System.currentTimeMillis();
-		Affichage.afficher("Plus grande taille de clique : " + clique.getMaximumSizeClique());
-		Affichage.afficher("durée calcul 2 : " + ((float) (start3 - start2)) / 1000 + "s");
-
-		Affichage.afficher("Clique 3");
-		clique = new Clique_3(graphe);
-		start2 = start3;
-		//clique.rechercheClique();
-		start3 = System.currentTimeMillis();
-		Affichage.afficher("Plus grande taille de clique : " + clique.getMaximumSizeClique());
-		Affichage.afficher("durée calcul 3 : " + ((float) (start3 - start2)) / 1000 + "s");
-		CliqueAbstraite clique2 = new Clique_3(graphe);
-
+		System.out.print(" taille : " + clique.getMaximumSizeClique());
+		//System.out.print(clique.getMaximumClique());
+		System.out.println(" durée calcul : " + ((float) ( start3 - start2)) / 1000 + "s");
 		// clique2.rechercheClique();
 
-		// Affichage.afficher("Plus grande taille de clique2 : "+
+		// System.out.println("Plus grande taille de clique2 : "+
 		// clique2.getMaximumSizeClique());
-		long startFin = System.currentTimeMillis();
-		Affichage.afficher("durée = " + ((float) (startFin - start)) / 1000 + "s");
+		// long startFin = System.currentTimeMillis();
+		// System.out.println("durée = " + ((float) (startFin - start)) / 1000 +
+		// "s");
 	}
 }
