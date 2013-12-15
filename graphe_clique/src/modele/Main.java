@@ -48,7 +48,7 @@ public class Main
 		Graphe graphe = new Graphe("C2000.9.clq",true);
 		long start2 = System.currentTimeMillis();
 		System.out.print("Glouton");
-		CliqueAbstraite clique = new Clique_2_2(graphe);
+		CliqueAbstraite clique = new Clique_semi_glouton_matrice(graphe);
 		clique.rechercheClique();
 		long start3 = System.currentTimeMillis();
 		System.out.print(" taille : " + clique.getMaximumSizeClique());

@@ -2,9 +2,9 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Clique_3 extends CliqueAbstraite
+public class Clique_glouton_list extends CliqueAbstraite
 {
-	public Clique_3(Graphe grapheRecherche)
+	public Clique_glouton_list(Graphe grapheRecherche)
 	{
 		super(grapheRecherche, new ArrayList<ArrayList<Integer>>());
 	}

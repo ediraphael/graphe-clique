@@ -2,11 +2,11 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Clique_2 extends CliqueAbstraite
+public class Clique_semi_glouton_list extends CliqueAbstraite
 {
 	public int maxSizeClique = Integer.MIN_VALUE;
 
-	public Clique_2(Graphe grapheRecherche)
+	public Clique_semi_glouton_list(Graphe grapheRecherche)
 	{
 		super(grapheRecherche,new ArrayList<ArrayList<Integer>>());
 	}
