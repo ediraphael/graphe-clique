@@ -2,12 +2,12 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Clique_6_2 extends CliqueAbstraite
+public class Clique_glouton_ameliore_matrice extends CliqueAbstraite
 {
 	public int maxSizeClique = Integer.MIN_VALUE;
 	private int cptDivergence = 0;
 
-	public Clique_6_2(Graphe grapheRecherche)
+	public Clique_glouton_ameliore_matrice(Graphe grapheRecherche)
 	{
 		super(grapheRecherche, new ArrayList<ArrayList<Integer>>());
 	}

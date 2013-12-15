@@ -46,30 +46,30 @@ public class RechercheClique extends JPanel implements ActionListener
 			case "semiGlouton":
 				if("arraylist".equals(typeRepresentationGraphe))
 				{
-					GrapheClique.setClique(new Clique_2(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_semi_glouton_list(GrapheClique.getGraphe()));
 				}else
 				{
-					GrapheClique.setClique(new Clique_2_2(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_semi_glouton_matrice(GrapheClique.getGraphe()));
 				}
 				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() + 1);
 				break;
 			case "gloutonAmeliore":
 				if("arraylist".equals(typeRepresentationGraphe))
 				{
-					GrapheClique.setClique(new Clique_6(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_ameliore_list(GrapheClique.getGraphe()));
 				}else
 				{
-					GrapheClique.setClique(new Clique_6_2(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_ameliore_matrice(GrapheClique.getGraphe()));
 				}
 				GrapheClique.progressBar.setMaximum(1001);
 				break;
 			case "glouton":
 				if("arraylist".equals(typeRepresentationGraphe))
 				{
-					GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_list(GrapheClique.getGraphe()));
 				}else
 				{
-					GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_matrice(GrapheClique.getGraphe()));
 				}
 				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() / 10);
 				break;
@@ -77,10 +77,10 @@ public class RechercheClique extends JPanel implements ActionListener
 			default:
 				if("arraylist".equals(typeRepresentationGraphe))
 				{
-					GrapheClique.setClique(new Clique_3(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_list(GrapheClique.getGraphe()));
 				}else
 				{
-					GrapheClique.setClique(new Clique_3_2(GrapheClique.getGraphe()));
+					GrapheClique.setClique(new Clique_glouton_matrice(GrapheClique.getGraphe()));
 				}
 				GrapheClique.progressBar.setMaximum(GrapheClique.getGraphe().getNbNoeud() / 10);
 				break;
