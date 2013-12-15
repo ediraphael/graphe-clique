@@ -13,8 +13,10 @@ public class Clique_2_2 extends CliqueAbstraite
 	{
 		Affichage.afficher(("Début recherche sur le graphe : " + this.getGrapheRecherche().getNom()));
 		ArrayList<ThreadRechercheMatrice> threads = new ArrayList<ThreadRechercheMatrice>();
+		//On parcours tout les noeud du graphe
 		for (int i = 0; i < this.getGrapheRecherche().getGraphe().length; i++)
 		{
+			//On vérifie le nombre de thread créé
 			while (threads.size() > 4)
 			{
 				try
@@ -24,17 +26,21 @@ public class Clique_2_2 extends CliqueAbstraite
 				{
 					e.printStackTrace();
 				}
+				//On vérifie si il y en a certain qui on fini
 				ArrayList<ThreadRechercheMatrice> threadsCopy = (ArrayList<ThreadRechercheMatrice>) threads.clone();
 				for (ThreadRechercheMatrice threadRecherche : threadsCopy)
 				{
 					if (!threadRecherche.isAlive())
 					{
+						//Si oui, alors on le supprime
 						threads.remove(threadRecherche);
 					}
 				}
 			}
+			//On initialise une clique avec le noeud courant
 			ArrayList<Integer> clique = new ArrayList<Integer>();
 			clique.add(i + 1);
+			//On clone notre matrice
 			int[][] grapheClone = new int[this.getGrapheRecherche().getGraphe().length][this.getGrapheRecherche().getGraphe().length];
 			for (int j = 0; j < grapheClone.length; j++)
 			{
@@ -43,13 +49,15 @@ public class Clique_2_2 extends CliqueAbstraite
 					grapheClone[j][j2] = this.getGrapheRecherche().getGraphe()[j][j2];
 				}
 			}
-			// this.recursiveClique(grapheClone, clique, i);
+			//On initiliase notre thread de recherche
 			ThreadRechercheMatrice thread = new ThreadRechercheMatrice(this, grapheClone, clique, i);
 			threads.add(thread);
+			//On lance notre recherche
 			thread.start();
 			this.cpt++;
 		}
 		boolean enAttente = true;
+		//On attent que tout nos thread soit fini
 		while (enAttente)
 		{
 			enAttente = false;
@@ -70,11 +78,13 @@ public class Clique_2_2 extends CliqueAbstraite
 	{
 		int noeudRetenu = -1;
 		int nbNoeudAdjacent = -1;
-		// Pour chaque noeud de la liste
+		//On parcours tout les noeuds du graphe
 		for (int i = 0; i < graphe.length; i++)
 		{
+			//Si le noeud courant fait partie de la liste d'adjacence du dernier noeud parcouru
 			if (graphe[dernierNoeud][i] == 1)
 			{
+				//On retire tout les noeuds qui ne peuvent plus etre atteint
 				for (int j = 0; j < graphe.length; j++)
 				{
 					if (graphe[dernierNoeud][j] == 0)
@@ -82,15 +92,18 @@ public class Clique_2_2 extends CliqueAbstraite
 						graphe[i][j] = 0;
 					}
 				}
+				//On récupère le nombre de noeud adjacent au noeud courant
 				int nbNoeudTemp = this.getGrapheRecherche().getNbNoeudAdjacent(graphe, i);
+				//On vérifie si elle est plus grande que le noeud déjà retenu
 				if (nbNoeudTemp > nbNoeudAdjacent && nbNoeudTemp >= 0)
 				{
-
+					//Si c'est le cas on le garde
 					nbNoeudAdjacent = nbNoeudTemp;
 					noeudRetenu = i;
 				}
 			}
 		}
+		//Si on a un noeud retenu, alors on continu notre recherche de clique
 		if (noeudRetenu != -1 && nbNoeudAdjacent >= 0)
 		{
 			clique.add(noeudRetenu + 1);
