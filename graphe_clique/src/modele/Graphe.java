@@ -20,18 +20,18 @@ public class Graphe
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
-	public Graphe(String fichier,boolean matrice)
+	public Graphe(String fichier, boolean matrice)
 	{
 		this.nom = "";
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
-		this.loadFile(fichier,matrice);
+		this.loadFile(fichier, matrice);
 	}
 
-	public Graphe(String nomGraphe, String fichier,boolean matrice)
+	public Graphe(String nomGraphe, String fichier, boolean matrice)
 	{
 		this.nom = nomGraphe;
 		this.listeNoeud = new HashMap<Integer, ArrayList<Integer>>();
-		this.loadFile(fichier,matrice);
+		this.loadFile(fichier, matrice);
 	}
 
 	public void setNoeuds(HashMap<Integer, ArrayList<Integer>> noeuds)
@@ -86,7 +86,7 @@ public class Graphe
 
 	public int getNbNoeud()
 	{
-		if(listeNoeud.size()!=0)
+		if (listeNoeud.size() != 0)
 		{
 			return listeNoeud.size();
 		}
@@ -111,17 +111,17 @@ public class Graphe
 		this.graphe = graphe;
 	}
 
-	public void loadFile(String fichier,boolean matrice)
+	public void loadFile(String fichier, boolean matrice)
 	{
-		if(matrice)
+		if (matrice)
 		{
 			loadFileMatrice(fichier);
-		}else
+		} else
 		{
 			loadFileArrayList(fichier);
 		}
 	}
-	
+
 	private void loadFileArrayList(String fichier)
 	{
 		try
@@ -205,7 +205,7 @@ public class Graphe
 			Affichage.afficher("Erreur Graphe:loadFile(" + fichier + "):" + ex.getMessage());
 		}
 	}
-	
+
 	private void loadFileMatrice(String fichier)
 	{
 		try
@@ -226,7 +226,8 @@ public class Graphe
 					} else if (line.contains("Graph Size"))
 					{
 						String[] lin = line.split(",");
-						String[] lineSplit = lin[0].split(":");
+						String[] lin2 = lin[0].split("Clique");
+						String[] lineSplit = lin2[0].split(":");
 						nbNoeud = Integer.parseInt(lineSplit[1].trim());
 						break;
 					} else if (line.contains("n ="))
@@ -234,6 +235,17 @@ public class Graphe
 						String[] lin = line.split("a");
 						String[] lineSplit = lin[0].split("=");
 						nbNoeud = Integer.parseInt(lineSplit[1].trim());
+						break;
+					} else if (line.contains("vertices"))
+					{
+						String[] lin = line.split("vertices");
+						String[] lin2 = lin[0].split("c");
+						nbNoeud = Integer.parseInt(lin2[1].trim());
+						break;
+					} else if (line.contains("p edge"))
+					{
+						String[] lin = line.split(" ");
+						nbNoeud = Integer.parseInt(lin[2].trim());
 						break;
 					}
 				}
